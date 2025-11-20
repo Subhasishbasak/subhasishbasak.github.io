@@ -1,0 +1,48 @@
+\begin{thebibliography}{5}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Barracosa et~al.(2021)Barracosa, Bect, Dutrieux~Baraffe, Morin,
+  Fournel, and Vazquez]{barracosa21}
+B.~Barracosa, J.~Bect, H.~Dutrieux~Baraffe, J.~Morin, J.~Fournel, and
+  E.~Vazquez.
+\newblock Extension of the pareto active learning method to multi-objective
+  optimization for stochastic simulators.
+\newblock In \emph{SIAM Conference on Computational Science and Engineering
+  (CSE21)}, Mar 2021.
+
+\bibitem[Basak(2024)]{basak24these}
+S.~Basak.
+\newblock Multipathogen quantitative risk assessment in raw milk soft cheese:
+  monotone integration and bayesian optimization.
+\newblock 2024.
+
+\bibitem[Basak et~al.(2024{\natexlab{a}})Basak, Christy, Guillier,
+  Audiat-Perrin, Sanaa, Tenenhaus-Aziza, Bect, and Vazquez]{basak23}
+S.~Basak, J.~Christy, L.~Guillier, F.~Audiat-Perrin, M.~Sanaa,
+  F.~Tenenhaus-Aziza, J.~Bect, and E.~Vazquez.
+\newblock Quantitative risk assessment of haemolytic and uremic syndrome (hus)
+  from consumption of raw milk soft cheese.
+\newblock \emph{Food and Ecological Systems Modelling Journal}, 5:\penalty0
+  e109502, 2024{\natexlab{a}}.
+\newblock \doi{10.3897/fmj.5.109502}.
+\newblock URL \url{https://doi.org/10.3897/fmj.5.109502}.
+
+\bibitem[Basak et~al.(2024{\natexlab{b}})Basak, Guillier, Bect, Christy,
+  Tenenhaus-Aziza, and Vazquez]{basak24mra}
+S.~Basak, L.~Guillier, J.~Bect, J.~Christy, F.~Tenenhaus-Aziza, and E.~Vazquez.
+\newblock Multipathogen quantitative risk assessment in raw milk soft cheese.
+\newblock \emph{Microbial Risk Analysis}, 27:\penalty0 100318,
+  2024{\natexlab{b}}.
+
+\bibitem[Sanaa et~al.(2004)Sanaa, Coroller, and Cerf]{sanaa04}
+M.~Sanaa, L.~Coroller, and O.~Cerf.
+\newblock Risk assessment of listeriosis linked to the consumption of two soft
+  cheeses made from raw milk: Camembert of normandy and brie of meaux.
+\newblock \emph{Risk Analysis: An International Journal}, 24\penalty0
+  (2):\penalty0 389--399, 2004.
+
+\end{thebibliography}

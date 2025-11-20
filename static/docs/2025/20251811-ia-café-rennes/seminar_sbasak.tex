@@ -1,0 +1,955 @@
+\documentclass[
+fontsize=10pt, % Font size
+pagesize, % Write page size to dvi or pdf
+parskip=half-, % Paragraphs separated by half a line
+]{article} % KOMA script (article)
+
+\linespread{1.12} % Increase line spacing for readability
+
+% ----------------------------------------------------------------------
+% Colors
+\usepackage{xcolor}	 % Required for custom colors
+% Define a few colors for making text stand out within the presentation
+\definecolor{colorbg}{RGB}{60,60,100}
+\definecolor{myblue}{RGB}{34,31,217}
+\definecolor{mybrown}{RGB}{139,69,19}
+\definecolor{myyellow}{RGB}{236,171,21}
+\definecolor{mygreen}{RGB}{5,102,8}
+\definecolor{myred}{RGB}{255,66,56}
+\definecolor{mygray}{RGB}{47,79,79}
+\definecolor{mymag}{RGB}{255,0,255}
+\definecolor{mypurple}{RGB}{186,85,211}
+\newcommand \temp {\color{red}[[TEMP]]}
+\newcommand \finTemp {\color{black}[[ENDTEMP]]}
+% Use these colors within the presentation by enclosing text in the commands below
+\newcommand*{\colorbg}[1]{\textcolor{colorbg}{#1}}
+\newcommand*{\myblue}[1]{\textcolor{myblue}{#1}}
+\newcommand*{\mybrown}[1]{\textcolor{mybrown}{#1}}
+\newcommand*{\mypurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand*{\myred}[1]{\textcolor{myred}{#1}}
+\newcommand*{\myyellow}[1]{\textcolor{myyellow}{#1}}
+\newcommand*{\mygray}[1]{\textcolor{mygray}{#1}}
+\newcommand*{\mymag}[1]{\textcolor{mymag}{#1}}
+\newcommand*{\mygreen}[1]{\textcolor{mygreen}{#1}}
+% ----------------------------------------------------------------------
+% Margins
+\usepackage[ % Page margins settings
+paperwidth=128mm,
+paperheight=96mm,
+includeheadfoot,
+top=3.5mm,
+bottom=1mm,
+left=5.5mm,
+right=5.5mm,
+headsep=5.5mm,
+headheight=8mm,
+footskip=7mm
+]{geometry}
+% ----------------------------------------------------------------------
+
+% Fonts
+\usepackage[T1]{fontenc}	 % For correct hyphenation and T1 encoding
+\usepackage{lmodern} % Default font: latin modern font
+%\usepackage{fourier} % Alternative font: utopia
+%\usepackage{charter} % Alternative font: low-resolution roman font
+\renewcommand{\familydefault}{\sfdefault} % Sans serif - this may need to be commented to see the alternative fonts
+
+\usepackage{fancyhdr}
+\usepackage{amssymb,amsfonts,amsthm,amsmath} % Required for theorem environments
+\usepackage[mathscr]{euscript}
+
+\usepackage{bm, bbm, dsfont} % Required for bold math symbols (used in the footer of the slides)
+\usepackage{enumerate}
+\usepackage{graphicx,psfrag}
+\graphicspath{{./figs/}}
+\usepackage{tikz} % Required for colored boxes
+\usetikzlibrary{positioning,calc}
+\usepackage{booktabs} % Required for horizontal rules in tables
+\usepackage{multicol} % Required for creating multiple columns in slides
+\usepackage{enumitem}
+\usepackage{lastpage} % For printing the total number of pages at the bottom of each slide
+\usepackage[english]{babel} % Document language - required for customizing section titles
+\usepackage{microtype} % Better typography
+\usepackage{tocstyle} % Required for customizing the table of contents
+\usepackage{ulem}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+%\usepackage{chapterbib}
+\usepackage[round, sort]{natbib}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup[table]{labelformat=empty}
+\usepackage{ccicons}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{calc}
+\newcommand   \Esp    {\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\lognormal}{Lognormal}
+\DeclareMathOperator{\weibull}{Weibull}
+\DeclareMathOperator{\poisson}{Poisson}
+% ----------------------------------------------------------------------
+\usepackage{notations}
+% ----------------------------------------------------------------------
+
+% Sets vertical centering of slide contents with increased space between paragraphs/lists
+\makeatletter
+\renewcommand*{\@textbottom}{\vskip \z@ \@plus 1fil}
+\newcommand*{\@texttop}{\vskip \z@ \@plus .5fil}
+\addtolength{\parskip}{\z@\@plus .04fil}
+\makeatother
+\setlength{\parindent}{0pt}
+% Remove page numbers and the dots leading to them from the outline slide
+\makeatletter
+\newtocstyle[noonewithdot]{nodotnopagenumber}{\settocfeature{pagenumberbox}{\@gobble}}
+\makeatother
+\usetocstyle{nodotnopagenumber}
+\setcounter{tocdepth}{1}
+%\AtBeginDocument{\renewcaptionname{english}{\contentsname}{\Large
+%Outline}} % Change the name of the table 
+
+% ----------------------------------------------------------------------
+
+\pagestyle{fancy} \fancyhf{} \renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.0pt}
+\rhead{\scriptsize\thepage/\pageref{LastPage}}
+\lfoot{\begin{tikzpicture}
+%    \draw [color=mygray] (0,0) -- (0.9\paperwidth,0);
+    \node [anchor=north west, inner sep=0pt] at (0,-2mm)
+    {\scriptsize\mygray{\hspace{0.1cm}\myauthor~\raisebox{0.2mm}{$\bm{\vert}$}~\myuni~\raisebox{0.2mm}{$\bm{\vert}$}~\mylieu~\raisebox{0.2mm}{$\bm{\vert}$}~\mydate}};
+  \end{tikzpicture}}
+
+\def\headerbar{\vbox{%
+\begin{tikzpicture}
+  \node at (0, 0)
+  [anchor=north west, rectangle, fill, inner
+  sep=0pt, minimum width=0.93\paperwidth, minimum
+  height=1.5pt, top color=colorbg, bottom
+  color=colorbg]{};
+\end{tikzpicture}}}
+ 
+\def\footbar{\begin{tikzpicture}
+  \node at (-3.7cm, 0)[anchor=north west, rectangle,fill,inner sep=0pt,minimum
+  width=0.93\paperwidth,minimum height=1pt,top color=colorbg,bottom
+  color=colorbg]{}; % Green bar
+  \node at (-3.7cm,-1.5mm)[anchor=north west, inner sep=0pt] {\scriptsize \myauthor\ \raisebox{0.2mm}{$\bm{\vert}$}\ \myuni}; % Left side text}
+%  \draw (0,0) -- (1,0);
+\end{tikzpicture}}
+%\ifoot{\footbar}
+
+
+%------------------------------------------------
+% Section spacing - deeper section titles are given less space due to lesser importance
+\usepackage{titlesec} % Required for customizing section spacing
+\titlespacing{\section}{0mm}{0mm}{6mm} % Lengths are: left, before, after
+\titlespacing{\subsection}{0mm}{0mm}{5mm} % Lengths are: left, before, after
+\titlespacing{\subsubsection}{0mm}{0mm}{0mm} % Lengths are: left, before, after
+\setcounter{secnumdepth}{2} % How deep sections are numbered, set to no
+                            % numbering by default - change to 1 for
+                            % numbering sections, 2 for numbering
+                            % sections and subsections, etc
+\titleformat{\subsection}{\normalfont\large\bfseries}{}{0pt}{}
+%------------------------------------------------
+
+%------------------------------------------------
+% Theorem style
+\newtheoremstyle{mythmstyle} % Defines a new theorem style used in this template
+{0.5em} % Space above
+{0.5em} % Space below
+{} % Body font
+{} % Indent amount
+{\sffamily\bfseries} % Head font
+{} % Punctuation after head
+{\newline} % Space after head
+{\thmname{#1}\ \thmnote{(#3)}} % Head spec
+	
+\theoremstyle{mythmstyle} % Change the default style of the theorem to the one defined above
+\newtheorem{theorem}{Theorem}[section] % Label for theorems
+\newtheorem{remark}[theorem]{Remark} % Label for remarks
+%\newtheorem{algorithm}[theorem]{Algorithm} % Label for algorithms
+\makeatletter % Correct qed adjustment
+%------------------------------------------------
+
+%------------------------------------------------
+% The code for the box which can be used to highlight an element of a slide (such as a theorem)
+\newcommand*{\mybox}[2]{ % The box takes two arguments: width and content
+\par\noindent
+\begin{tikzpicture}[mynodestyle/.style={rectangle,draw=colorbg,thick,inner sep=2mm,text justified,top color=white,bottom color=white,above}]\node[mynodestyle,at={(0.5*#1+2mm+0.4pt,0)}]{ % Box formatting
+\begin{minipage}[t]{#1}
+#2
+\end{minipage}
+};
+\end{tikzpicture}
+\par\vspace{-1.3em}}
+
+\newcommand{\ngr}{\newpage\addtocounter{page}{-1}}
+\DeclareMathOperator{\score}{score}
+\usepackage[most]{tcolorbox}
+\colorlet{LightLavender}{blue!25}
+\tcbset{on line, 
+        boxsep=4pt, left=0pt,right=0pt,top=0pt,bottom=0pt,
+        colframe=white,colback=LightLavender,  
+        highlight math style={enhanced}
+        }
+%-----------------------------------------------------------------------
+%	PRESENTATION INFORMATION
+%-----------------------------------------------------------------------
+\newcommand*{\mytitle}{COPIL} % Title
+\newcommand*{\runninghead}{\vskip -7mm ArtiSaneFood} % Running head displayed on almost all slides
+\newcommand*{\myauthor}{Subhasish Basak et al} % Presenters name(s)
+\newcommand*{\mydate}{Novembre 18, 2025} % Presentation date
+\newcommand*{\mylieu}{IA Café - INRAE OPAALE, Rennes} % Presentation date
+\newcommand*{\myuni}{INRAE - Bordeaux} % University or department
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{%
+  bookmarksnumbered, %
+  bookmarksdepth=2, %
+  colorlinks=false, %
+  breaklinks, %
+  pdfborder=0 0 0, %
+  pdftitle={\mytitle}, %
+  pdfauthor={Subhasish Basak et al.}, %
+  pdfkeywords={}%
+}
+
+%-----------------------------------------------------------------------
+
+\begin{document}
+
+\thispagestyle{empty} % No slide header and footer
+% Define box and box title style
+
+\tikzstyle{titlebox} = [fill=colorbg, rectangle, inner sep=10pt, inner ysep=18pt]
+\tikzstyle{fancytitle} =[fill=red, text=white]
+%\vspace{-2cm}%
+\hspace{-8mm}
+%\centering
+\begin{tikzpicture}
+\node [titlebox] (box){%
+    \begin{minipage}{\paperwidth}
+      \begin{center}
+        \color{white}\sffamily 
+
+	      {\large \textbf{Fromage au lait cru et risques multi-pathogènes :\\
+	      mieux prévenir avec l’approche bayésienne}} 
+	      \vskip 0.5cm 
+	      \normalsize
+	      Subhasish BASAK$^*$
+	      \vskip 0.45cm
+	      \textbf{IA Café - INRAE OPAALE}
+	      \vskip 0.0cm
+	      \textbf{Rennes, Novembre 18, 2025}
+	 \vskip 0.3cm
+	 {\fontsize{8}{8}\selectfont $^*$INRAE Nouvelle-Aquitaine, Bordeaux}
+      \end{center}
+    \end{minipage}
+};
+\end{tikzpicture}
+\clearpage
+% ----------------------------------------------------------------------
+%\thispagestyle{empty}
+\vspace{-8mm}
+\large 
+\textbf{Contexte}
+\normalsize
+\begin{itemize}
+        \item \myred{Fromages à pâte molle au lait cru} 
+	\begin{itemize}
+		\item Lait non pasteurisé : chauffé à $<40$°C
+	\end{itemize}
+	\item \myblue{Contamination potentielle par des agents pathogènes}
+        \begin{itemize}
+                \item[]1. \textit{Escherichia coli} productrice de shigatoxine
+                        (STEC)
+                \item[]2. \textit{Salmonella}
+                \item[]3. \textit{Listeria monocytogenes}
+        \end{itemize}
+	\item \myred{Risque de maladie}  
+	\begin{itemize}
+                \item[]1. Syndrome hémolytique et urémique (SHU) 
+                \item[]2. Salmonellose
+                \item[]3. Listériose
+        \end{itemize}
+
+\end{itemize}
+%\vspace{0.02cm}
+\newpage
+%-----------------------------------------------------------------------
+\large{\textbf{Mesure de maîtrise - Interventions}}
+\normalsize
+\begin{itemize}
+	\item \myblue{Tri du lait de ferme}
+	\begin{itemize}
+		\item lait de ferme testé pour la concentration de
+			\textit{E. coli}
+		\item la ferme est exclue si sa concentration dépasse un 
+			certain limite
+                \begin{itemize}
+			\item \myred{la fréquence de tri}
+			\item \myred{limite/seuil de concentration}
+                \end{itemize}
+	\end{itemize}
+	\item \myblue{Test de fromage} 
+	\begin{itemize}
+		\item les lots de fromages sont testés
+		\item le lot est rejeté si une contamination est détectée 
+		\begin{itemize}
+			\item \myred{la proportion de lots testés}
+			\item \myred{le nombre d'unités d'échantillonnage ($25$g)}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\newpage 
+% ----------------------------------------------------------------------
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.8\textwidth]{images/conso/pic.png}
+\end{figure}
+\begin{itemize}
+	\item \myred{Comment améliorer les interventions ?} \myblue{réduire le gaspillage} 
+                \vspace{-1.7mm}
+        \begin{multicols}{2}
+                    \item[] \tcbox{Tri du lait}
+		    \item[] chaque jour ? tous les $10$ jours ?
+		    \item[] seuil de contamination acceptable ?
+		    \item[] \tcbox{Test de fromage}
+		    \item[] tester chaque lot ? (coûteux !)
+		    \item[] combien d’échantillons à tester ?
+        \end{multicols}
+\end{itemize}
+\newpage 
+%-----------------------------------------------------------------------
+\large{\textbf{Trouver le juste équilibre : risque vs coût}}
+\normalsize
+\begin{itemize}
+	\item \myred{Quantités d'intérêt à} $\searrow$ \myblue{minimiser}
+                \begin{center}
+                        \tcbox{Risque de maladie pour le consommateur}
+                        \par
+                        compromis $\uparrow$ $\downarrow$ trade-off
+                        \par
+                        \tcbox{Coût d'intervention pour le producteur}
+                \end{center}
+        \item \myred{Objectif} : \myblue{Pour assurer la sécurité des fromages au lait cru ...}
+                \begin{itemize}
+			\item Étudier comment le \myred{risque} et le \myred{coût} varient selon les interventions
+			\item Évaluer numériquement le \myred{risque} et le \myred{coût} des interventions
+			\item Trouver des interventions \myblue{minimisant} à la fois le \myred{risque} et le \myred{coût}
+                \end{itemize}
+\end{itemize}
+\newpage 
+% ----------------------------------------------------------------------
+\vspace{30cm}
+\begin{center}
+\large{\textbf{Modèle AQRM}}
+\end{center}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.3\textwidth]{images/camembert.png}
+	\end{figure}
+\vspace{-5cm}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Qu’est-ce que l’AQRM ?}}
+\normalsize
+\begin{itemize}
+        \item AQRM : \myred{Appréciation Quantitative des Risques Microbiologiques} 
+	\item \myblue{Modèle mathématique}
+	\begin{center}
+                \tcbox{exposition aux agents pathogènes} $\rightarrow$
+                \tcbox{risque de maladie}
+	\end{center}
+	\item Exposition aux agents pathogènes tout au long de la chaîne
+\end{itemize}
+\begin{figure}[H]
+        \centering
+                \includegraphics[width=0.9\textwidth]{images/conso/schema.png}
+	      % \caption{Modèle \myred{ferme à la fourchette}
+	      % \mybrown{\citep{basakicpmf23}}}
+\end{figure}
+
+\clearpage
+% ----------------------------------------------------------------------
+\large{\textbf{Comment construire un modèle d’AQRM ?}}
+\normalsize
+\begin{itemize}
+        \item \myblue{Production d’un lot de fromage} -
+                \myred{$20\,000 - 25\,000$ fromages}
+\end{itemize}
+\vspace{-0.5cm}
+\begin{figure}[H]
+        \centering
+                \includegraphics[width=\textwidth]{images/QMRA/farm2fork.pdf}
+		\caption{Modèle \myblue{ferme à la fourchette} estime le \myred{risque/probabilité de maladie}}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Modèle AQRM : Les modules}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.85\textwidth]{images/aqr_1/0.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module ferme : les entrées}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.85\textwidth]{images/aqr_1/1.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module ferme : les sorties}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.85\textwidth]{images/aqr_1/2.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module ferme – contamination du lait}}
+\normalsize
+\begin{itemize}
+	\item \tcbox{Approche directe} — \textit{Listeria} et \textit{E. coli} - \myred{avec données de terrain}
+    $$
+    Y_{\rm Lm}^{\rm lait} \sim \mypurple{\lognormal}
+    \text{ \mybrown{\citep{sanaa04}}}
+    $$
+    $$
+    Y_{\rm Ecoli}^{\rm lait} \sim \mypurple{\lognormal} 
+    \text{ \mybrown{\citep{basak24mra}}}
+    $$
+    \item \tcbox{Approche indirecte} — STEC et \textit{Salmonella}
+    \begin{align*}
+        Y_{\rm pathogène}^{\rm lait} =
+        Y_{\rm Ecoli}^{\rm lait}
+        \cdot
+        \left( 
+        Y^{\rm fèces}_{\rm pathogène} /
+        Y^{\rm fèces}_{\rm Ecoli} 
+        \right)
+    \end{align*}
+
+    \begin{itemize}
+        \item \myred{Pourquoi ?} Limite de détection :  concentration faible
+        \item \myred{Comment ?} Utilisant les concentrations 
+        $Y^{\rm fèces}_{\rm pathogène}$ et $Y_{\rm Ecoli}^{\rm lait}$
+    \end{itemize}
+    \item \myblue{Sorties :} concentrations simulées $Y_{x}^{\rm lait}$ de pathogènes($x$) dans le lait
+\end{itemize}
+\newpage
+%-----------------------------------------------------------------------
+\large{\textbf{Module cheese : les entrées}}
+\normalsize
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.75\textwidth]{images/aqr_1/3.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module cheese : les sorties}}
+\normalsize
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.75\textwidth]{images/aqr_1/4.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module fromage – évolution des pathogènes}}
+\normalsize
+\begin{itemize}
+    \item Utilise les sorties de \myred{le module ferme}
+    \item \myblue{Phase de croissance $\nearrow$}
+    \begin{itemize}
+    \item Croissance \myred{logistique} avec un taux dynamique
+        \myred{$\mu_x(\text{Temp.}, \text{pH}, \hdots)$}
+    \end{itemize}
+\end{itemize}
+
+\tcbox{Stockage du lait} $\rightarrow$ \tcbox{Moulage} $\rightarrow$ \textit{colonisation}
+$\rightarrow$ \tcbox{Égouttage} $\rightarrow$ \tcbox{Salage}
+
+\begin{itemize}
+    \item \myblue{Phase de déclin $\searrow$}
+    \begin{itemize}
+    \item Modèle d’inactivation \myred{log-linéaire} avec un taux constant \myred{$\rho_x$} 
+    \end{itemize}
+\end{itemize}
+
+\begin{center}
+    \tcbox{Affinage} $\rightarrow$ \tcbox{Stockage du fromage} $\rightarrow$ \tcbox{Consommation}
+\end{center}
+
+\begin{itemize}
+\item \myblue{Sorties :} \myred{nombre$_x$} et \myred{taille$_x$} simulés de colonies de \myred{$x$} dans un fromage
+\end{itemize}
+\clearpage
+% -----------------------------------------------------------------------
+\large{\textbf{Module consumer : les entrées}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.85\textwidth]{images/aqr_1/5.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module consumer : les sorties}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.85\textwidth]{images/aqr_1/6.pdf}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Module consumer – estimation du risque}}
+\normalsize
+\begin{itemize}
+    \item \myblue{Dose dans une portion de fromage (25 g)} 
+	    $\Gamma_x =$ \myred{nombre$_x$} $\times$ \myred{taille$_x$}
+
+    \item \myblue{Probabilité de maladie pour 25 g de fromage}
+	    \begin{itemize}
+		    \item Fonction (epidemiologique) dose-réponse : $\myred{P_{x}}(\text{âge}, \Gamma_{x})$
+            \end{itemize}
+    \item \myred{Risque de maladie} moyen pour \myblue{un lot particulier} de fromages 
+    \begin{align*}
+	R^{\rm lot}_{x}(\mygreen{\xi_x}) = \sum_{\mypurple{\text{âge}}}
+	g({\mypurple{\text{âge}}}) \cdot
+        \int_{\Gamma_{x}}\myred{P_{x}}(\mypurple{\text{âge}},
+	    \Gamma_x) \text{d}\gamma_x
+    \end{align*}
+    \scriptsize
+    \item[]$\rightarrow g(\mypurple{\text{âge}})$ : proportion de consommation de fromage par groupe d’âge 
+    \item[]$\rightarrow \mygreen{\xi_x}$ : variables aléatoires décrivant un lot
+    \normalsize
+    \item \myred{Risque moyen de maladie} (indépendant du lot) : $R_x = \int_{\mygreen{\xi_x}} R^{\rm lot}_{x}(\mygreen{\xi_x}) \text{d}\mygreen{\xi_x}$
+\end{itemize}
+\clearpage
+% -----------------------------------------------------------------------
+\large{\textbf{Intégration des interventions dans les calcul}}
+\begin{itemize}
+    \item \myblue{Coûts des interventions} \& \myred{Probabilité de rejet}
+\end{itemize}
+\vspace{-0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/QMRA/farm2fork_interv.pdf}
+    \caption{\myblue{Tri du lait} et du \myblue{test des fromages} dans le modèle d'\myblue{AQRM}}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{A quoi ça ressemble}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/aqr/aqrr_1.pdf}
+	\caption{Les paramètres des processus d'intervention}
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Résumer - modèle AQRM}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/aqr/aqrr_2.pdf}
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Le risque baseline} - \myred{aucune intervention}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/aqr/aqrr_3.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Scénario 1 : intervention}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/aqr/aqrr_4.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Une seule métrique pour 3 risques}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/aqr/aqrr_5.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Qu'est-ce que DALY ?}}
+\normalsize
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/daly.png}
+\end{figure}
+\begin{itemize}
+	\item \myblue{L'idée} est de convertir le risque en années de vie
+\end{itemize}
+\newpage 
+% ----------------------------------------------------------------------
+\large{\textbf{Calcul du DALY}}
+\normalsize
+\begin{table}[ht]
+	\caption{\myred{DALY} : \myblue{Espérance de vie corrigée de l'incapacité} 
+	(\emph{exprimées en années})} % 
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|c|c|c}
+    \hline
+	Pathogènes & YLL (1 cas) & YLD (1 cas) & DALY (1 cas) \\
+    \hline
+	Infections à STEC & $0.0411$ & $0.013$ & \myred{$0.0541$} années \\
+	Infections à MPS-STEC & $2.7$ & $1.0$ & \myred{$3.7$} années \\
+	Listeriosis & $3.3$ & $0.4$ & \myred{$3.7$} années \\
+	Salmonellosis & $0.015$ & $0.004$ & \myred{$0.019$} années \\
+    \hline
+\end{tabular}
+\end{adjustbox}
+\label{tab:daly}
+\end{table}
+\begin{itemize}
+	\item \myblue{Étape 1} : Pour 
+		pathogène ($\text{x}$) calculer,
+	\begin{itemize}
+		\item \tcbox{DALY par portion de $25$g de fromage} = 
+		$\myblue{\text{Risque}_{\rm x}} \times \myred{\text{DALY(1 cas)}_{\rm x}}$  
+	\end{itemize}
+	\item \myblue{Étape 2} : Calculer DALY totale causé par l’un 
+		des 3 pathogènes
+\end{itemize}
+\newpage 
+% ----------------------------------------------------------------------
+\large{\textbf{DALY : Scénario de base}}
+\normalsize
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.8\textwidth]{images/daly/daly_baseline.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Scénario 1 : intervention}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/daly/daly_1.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Scénario 2 : augmenter le nombre d'échantillons}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/daly/daly_2.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Scénario 3 : diminuer la limite de tri}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/daly/daly_3.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Scénario 4 : modifier simultanément deux paramètres}}
+\normalsize
+\vspace{-1cm}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.9\textwidth]{images/daly/daly_4.pdf}
+	\caption{\myblue{Exemple jouet} : \textbf{\myred{VALEURS SANS LIEN AVEC LE RISQUE RÉEL}}}
+
+	\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Différents scénarios d'intervention}}
+\normalsize
+\begin{itemize}
+	\item Condidérer le problème de l'optimisation pour STEC
+	\item \myblue{Espace de paramètres}
+		\begin{align*}
+			\text{\myred{fréquence} de tri du lait} &\in \{0.1, 0.2, 0.3, \hdots, 1\} \\
+			\text{\myred{seuil} de tri du lait} &\in \{10, 20, 30, 50, 100, 200\} \\
+			\text{\myred{proportion} de lot de fromage testé} &\in \{0.1, 0.2, 0.3, 0.4, 0.5\} \\
+			\text{\myred{nombre} d'echantillons de fromage} &\in \{3, 5, 8, 10, 12\}
+		\end{align*}
+	\item Toutes les combinaisons possibles donnent \textbf{\myred{$1500$}} 
+		scénarios possible
+	\item Pour chaque scénario le \myblue{DALY} et le \myblue{côut} 
+		sont calculés
+\end{itemize}
+\newpage
+% ----------------------------------------------------------------------
+\begin{center}
+	\includegraphics[width=0.8\textwidth]{images/pareto/obj_STEC.pdf}
+\end{center}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Comment choisir les scénarios optimaux ?}}
+\normalsize
+\begin{itemize}
+	\item Nous utilisons le concept \myred{d'optimalité de Pareto}
+	\item L'idée est d'obtenir un \myblue{compromis efficace entre les 
+		différents objectifs} \myred{plutôt qu'une solution unique}
+	\item Il cherche des solutions où aucune amélioration n'est 
+		possible dans un objectif \myred{sans détériorer un autre}
+	\item Les solutions Pareto-optimales sont \myblue{non dominées}, 
+		offrant un compromis efficace entre les objectifs
+	\item Elles forment \myred{le front de Pareto}, et les décideurs 
+		choisissent la meilleure solution selon leurs préférences
+\end{itemize}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Solutions Pareto optimale}}
+\normalsize
+\begin{figure}[H]
+        \centering
+	\includegraphics[width=0.5\textwidth]{images/pareto/pareto_1.pdf}
+	\caption{Un scénario particulier : $z_1$}
+\end{figure}
+\newpage 
+% ----------------------------------------------------------------------
+\large{\textbf{Solutions Pareto optimale}}
+\normalsize
+\begin{figure}[H]
+        \centering
+	\includegraphics[width=0.5\textwidth]{images/pareto/pareto_2.pdf}
+	\caption{$D(z_1)$ : Région dominée par $z_1$}
+\end{figure}
+\newpage 
+% ----------------------------------------------------------------------
+\large{\textbf{Solutions Pareto optimale}}
+\normalsize
+\begin{figure}[H]
+        \centering
+	\includegraphics[width=0.5\textwidth]{images/pareto/pareto_3.pdf}
+	\caption{Tout autre point en $D(z_1)$ aura un côut ou un DALY
+	plus élevé}
+\end{figure}
+\newpage 
+% ----------------------------------------------------------------------
+\large{\textbf{Solutions Pareto optimale}}
+\normalsize
+\begin{figure}[H]
+        \centering
+	\includegraphics[width=0.5\textwidth]{images/pareto/pareto_4.pdf}
+	\caption{$z_3$, $z_4$ and $z_5$ sont dominée par $z_1$ et $z_2$}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Le front Pareto est dans la \myred{frontière}}}
+\normalsize
+\begin{figure}[H]
+        \centering
+	\includegraphics[width=0.5\textwidth]{images/pareto/pareto_4.pdf}
+	\caption{$z_1$ et $z_2$ sont Pareto optimale}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\begin{center}
+	\includegraphics[width=0.8\textwidth]{images/pareto/pf_stec.pdf}
+\end{center}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Validation - le modèle AQRM est-il vraiment fiable ?}}
+\normalsize
+\begin{itemize}
+    \item \myred{Pas possible de valider avec des données réelles}
+    \begin{itemize}
+        \item Très peu de cas de maladie chaque année en France/UE
+        \item Difficile d’identifier la source du cas observé
+        \item Expérimentations sur l’humain non réalistes / non faisables
+    \end{itemize}
+
+    \item \myblue{Validation des sous-modules} – \myred{bloc par bloc}
+    \begin{itemize}
+	    \item \tcbox{Challenge tests} pour estimer les taux de croissance / déclin
+	    \item \tcbox{Données épidémiologiques} pour estimer la relation dose–réponse
+	    \item \tcbox{Modèles existants} pour comparer des résultats
+    \end{itemize}
+\end{itemize}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{à quoi ça sert ?}}
+\begin{center}
+	\tcbox{``Models are always incomplete representations of the system} \\
+	\tcbox{they are intended to model, but they can still be useful''}
+	\mybrown{-WHO}
+\end{center}
+\begin{itemize}
+	\item Tester et comparer différents scénarios d'intervention
+	\item \myred{Analyse de sensibilité} : identifier les paramètres influents
+	\item Comparer \myred{relative risk/DALY} pour différent scénarios
+	\item $\hdots$
+\end{itemize}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Article FESMJ + modèle FSKX \mybrown{\citep{basak23}}}}
+\begin{figure}[H]
+        \centering
+                \includegraphics[width=0.9\textwidth]{images/conso/fskx.png}
+        \caption{Interface utilisateur KNIME (\myred{open source GPLv3})}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Application R-shiny \myred{(en cours !)}}}
+\begin{figure}[H]
+        \centering
+                \includegraphics[width=0.7\textwidth]{images/conso/actalia.png}
+        \caption{Destinée aux \myred{professionnels du fromage}}
+\end{figure}
+\newpage
+% ----------------------------------------------------------------------
+\vspace{30cm}
+\begin{center}
+\large{\textbf{Où est l'approche bayésienne ?}}
+\end{center}
+\begin{figure}[H]
+  	\centering
+		\includegraphics[width=0.3\textwidth]{images/camembert.png}
+	\end{figure}
+\vspace{-5cm}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Estimation du front de Pareto : \myred{difficultés}}}
+\normalsize
+\begin{itemize}
+        \item \myblue{Coûteux} : \myred{3 jours de calcul} pour évaluer les $1500$ scénarios
+        \item \myblue{Stochastique} : chaque scénario est évalué avec \myred{une incertitude}
+        \item Proposer un algorithme \myblue{d'optimisation bayésienne}
+        \begin{itemize}
+                \item Évaluation \myred{séquentielle} des scénarios « importants »
+		\item \myred{Régression par processus gaussien} pour tous les scénarios
+		\item Comparaison avec des \myred{rectangles d’incertitude} \mybrown{\citep{barracosa21}}
+        \end{itemize}
+\end{itemize}
+\begin{itemize}
+	\item Avec l'algorithme : \myblue{4 h de calcul} avec une précision de
+                \myred{$96\%$}
+        \begin{itemize}
+                \item Ma thèse : \mybrown{\citet{basak24these}}
+        \end{itemize}
+\end{itemize}
+\newpage
+% ----------------------------------------------------------------------
+\large{\textbf{Résumé des points clés et conclusion}}
+\normalsize
+\begin{center}
+	\tcbox{Étudier comment le \myred{risque} et le \myred{coût} varient selon les interventions}
+\end{center}
+\begin{itemize}
+	\item \myred{Approche classique} : \myblue{comparer tous les scénarios pour trouver le meilleur}
+	\item Mais elle devient peu pratique lorsque le \myred{coût de simulation est élevé}
+        \begin{center}
+                \tcbox{Optimisation simultanée du \myred{risque} et le \myred{coût}}
+        \end{center}
+        \item \myblue{Nouvelle approche} : Algorithmes d’optimisation multi-objectif bayésien
+        \begin{itemize}
+		\item Optimiser un simulateur \myred{stochastique} + \myred{ coûteux}
+        \end{itemize}
+\end{itemize}
+\begin{center}
+	\tcbox{Validation du modèle} \myred{FUTURE OF FOOD SAFETY !!}
+\end{center}
+\newpage
+% ----------------------------------------------------------------------
+\vspace{-8mm}
+\begin{center}
+	\vskip-4cm
+	\begin{minipage}[c]{\linewidth}
+    \centering
+	\includegraphics[scale=0.12]{images/logos/prima.png}
+	\hspace{9mm}%
+	\includegraphics[scale=0.08]{images/logos/artisane.png}
+        \hspace{8mm}%
+	\includegraphics[scale=0.32]{images/logos/anr.png}
+	\hspace{9mm}%
+	\vskip 2cm
+	\end{minipage}
+	\par
+\end{center}
+\vspace{0.05cm}
+%\small
+\begin{center}
+	Ce travail s’inscrit dans le cadre du projet \myblue{ArtiSaneFood} (numéro de subvention :
+        \myblue{ANR-18-PRIM-0015}), qui fait partie du programme \myblue{PRIMA} soutenu par
+        l’\myblue{UE}.
+\end{center}
+%\vspace{0.02cm}
+\begin{center}
+	\begin{minipage}[c]{\linewidth}
+    \centering
+	\includegraphics[scale=0.18]{images/logos/anses.png}
+	\hspace{5mm}%
+	\includegraphics[scale=0.17]{images/logos/cniel.jpg}
+        \hspace{5mm}%
+	\includegraphics[scale=0.18]{images/logos/actalia.jpg}
+        \hspace{5mm}%
+	\includegraphics[scale=0.25]{images/logos/aop.jpg}
+        \hspace{1mm}%
+	\includegraphics[scale=0.25]{images/logos/cnaol.jpg}
+        \hspace{5mm}%
+	\end{minipage}
+	\par
+\end{center}
+\begin{center}
+	\begin{minipage}[c]{\linewidth}
+    \centering
+	\includegraphics[scale=0.05]{images/logos/cs.jpg}
+	\hspace{11mm}%
+	\includegraphics[scale=0.03]{images/logos/cnrs.png}
+        \hspace{11mm}%
+	\includegraphics[scale=0.2]{images/logos/l2s.png}
+	\hspace{11mm}%
+	\end{minipage}
+	\par
+\end{center}
+% ----------------------------------------------------------------------
+\Large
+\begin{center}
+	\textbf{Merci pour votre attention!}
+	\begin{figure}[H]
+  	\centering
+	\includegraphics[width=0.6\textwidth]{images/copil.jpg}
+	\end{figure}
+	\small
+	\vspace{-0.5cm}
+	COPIL ArtiSaneFood 2023, Maison du Lait, Paris
+\end{center}
+% -----------------------------------------------------------------------
+\bibliographystyle{plainnat}
+\scriptsize
+\bibliography{references.bib}
+\end{document}
